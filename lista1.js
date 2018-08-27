@@ -1,3 +1,5 @@
+const NS_PER_SEC = 1e9;
+
 function getRandomNumber(minValue = 0, maxValue = 10000000000000) {
     return Math.floor(Math.random() * maxValue) + minValue;
 }
@@ -5,33 +7,15 @@ function getRandomNumber(minValue = 0, maxValue = 10000000000000) {
 function getArrayOfRandomNumbers(arraySize = 10, maxValue = 10000000000000, minValue = 0) {
     let sortedArray = [];
 
-    if (Math.sign(minValue) !== 1) {
-        //erroo bllablla
-        minValue = 0;
-    }
+    if (Math.sign(minValue) !== 1) { minValue = 0; }
 
-    if (Math.sign(arraySize) !== 1) {
-        //erroo bllablla
-        arraySize = 10
-    }
+    if (Math.sign(arraySize) !== 1) { arraySize = 10 }
 
-    if (minValue >= maxValue) {
-        //error bla bla
-        minValue = 0;
-        maxValue = 10000000000000;
-    }
+    if (minValue >= maxValue) { minValue = 0; maxValue = 10000000000000; }
 
-    if (Math.sign(maxValue) !== 1) {
-        //erroo bllablla
-        maxValue = 10000000000000;
-    }
+    if (Math.sign(maxValue) !== 1) { maxValue = 10000000000000; }
 
-    if ((maxValue - minValue) < sortedArray) {
-        //erroo bla bllla
-        arraySize = 10
-        minValue = 0;
-        maxValue = 10000000000000;
-    }
+    if ((maxValue - minValue) < sortedArray) { arraySize = 10; minValue = 0; maxValue = 10000000000000; }
 
     while (sortedArray.length < arraySize) {
         const randomNumber = getRandomNumber(minValue, maxValue);
@@ -40,15 +24,13 @@ function getArrayOfRandomNumbers(arraySize = 10, maxValue = 10000000000000, minV
         }
     }
     return sortedArray;
-
 }
 
 function getSortedArray(arraySize = 10, minValue = 0) {
     let sortedArray = [];
-    if (minValue < 0.0) {
-        //erroo bllablla
-        minValue = 0;
-    }
+
+    if (minValue < 0.0) { minValue = 0; }
+
     for (let index = minValue; index < (arraySize + minValue); index++) {
         sortedArray.push(index);
     }
@@ -58,11 +40,11 @@ function getSortedArray(arraySize = 10, minValue = 0) {
 function linearSearch(sortedArray, valueToSearch) {
     for (let index = 0; index < sortedArray.length; index++) {
         if (valueToSearch === sortedArray[index]) {
-            console.log("linearSearch: O " + valueToSearch + " foi encontrado na posição " + index + ".");
+            console.log("linearSearch: O valor " + valueToSearch + " foi encontrado na posição " + index + ".");
             return index;
         }
     }
-    console.log("linearSearch: O " + valueToSearch + " não foi encontrado.");
+    console.log("linearSearch: O valor " + valueToSearch + " não foi encontrado.");
     return false;
 }
 
@@ -77,13 +59,11 @@ function binarySearch(sortedArray, valueToSearch) {
         } else if (valueToSearch < valueToSearch) {
             high = mid - 1;
         } else {
-            console.log("binarySearch: O " + valueToSearch + " foi encontrado na posição " + mid + ".");
-
+            console.log("binarySearch: O valor " + valueToSearch + " foi encontrado na posição " + mid + ".");
             return mid;
         }
     }
-    console.log("binarySearch: O " + valueToSearch + " não foi encontrado.");
-
+    console.log("binarySearch: O valor " + valueToSearch + " não foi encontrado.");
     return false;
 }
 
@@ -96,8 +76,7 @@ function interpolationSearch(sortedArray, valueToSearch) {
         delta = (valueToSearch - sortedArray[low]) / (sortedArray[high] - sortedArray[low]);
         position = low + Math.floor((high - low) * delta);
         if (sortedArray[position] === valueToSearch) {
-            console.log("interpolationSearch: O " + valueToSearch + " foi encontrado na posição " + position + ".");
-
+            console.log("interpolationSearch: O valor " + valueToSearch + " foi encontrado na posição " + position + ".");
             return position;
         }
         if (sortedArray[position] < valueToSearch) {
@@ -106,53 +85,79 @@ function interpolationSearch(sortedArray, valueToSearch) {
             high = position - 1;
         }
     }
-    console.log("interpolationSearch: O " + valueToSearch + " não foi encontrado.");
-
+    console.log("interpolationSearch: O valor " + valueToSearch + " não foi encontrado.");
     return false;
 }
 
-let arrayWith1RandomNumber = getArrayOfRandomNumbers(1);
-console.log(arrayWith1RandomNumber);
-
 let arrayWith10RandomNumbers = getArrayOfRandomNumbers(10);
-console.log(arrayWith10RandomNumbers);
-
 let arrayWith100RandomNumbers = getArrayOfRandomNumbers(100);
-console.log(arrayWith100RandomNumbers);
-
 let arrayWith1KRandomNumbers = getArrayOfRandomNumbers(1000);
-console.log(arrayWith1KRandomNumbers);
-
 let arrayWith10KRandomNumbers = getArrayOfRandomNumbers(10000);
-console.log(arrayWith10KRandomNumbers);
-
-let arrayWith1Number = getSortedArray(1);
-console.log(arrayWith1Number);
 
 let arrayWith10Numbers = getSortedArray(10);
-console.log(arrayWith10Numbers);
-
 let arrayWith100Numbers = getSortedArray(100);
-console.log(arrayWith100Numbers);
-
 let arrayWith1KNumbers = getSortedArray(1000);
-console.log(arrayWith1KNumbers);
-
 let arrayWith10KNumbers = getSortedArray(10000);
-console.log(arrayWith10KNumbers);
 
 
-linearSearch(arrayWith10RandomNumbers, getRandomNumber())
-linearSearch(arrayWith100RandomNumbers, getRandomNumber())
-linearSearch(arrayWith1KRandomNumbers, getRandomNumber())
-linearSearch(arrayWith10KRandomNumbers, getRandomNumber())
+const timeLinearSearch10 = process.hrtime();
+linearSearch(arrayWith10Numbers, getRandomNumber(0, 1000))
+const diffLinearSearch10 = process.hrtime(timeLinearSearch10);
+console.log(`linearSearch(arrayWith10Numbers, getRandomNumber(0,1000)): took ${diffLinearSearch10[0] * NS_PER_SEC + diffLinearSearch10[1]} nanoseconds\n`);
 
-binarySearch(arrayWith10RandomNumbers, getRandomNumber())
-binarySearch(arrayWith100RandomNumbers, getRandomNumber())
-binarySearch(arrayWith1KRandomNumbers, getRandomNumber())
-binarySearch(arrayWith10KRandomNumbers, getRandomNumber())
+const timeLinearSearch100 = process.hrtime();
+linearSearch(arrayWith100Numbers, getRandomNumber(0, 1000))
+const diffLinearSearch100 = process.hrtime(timeLinearSearch100);
+console.log(`linearSearch(arrayWith100Numbers, getRandomNumber(0,1000)): took ${diffLinearSearch100[0] * NS_PER_SEC + diffLinearSearch100[1]} nanoseconds\n`);
 
-interpolationSearch(arrayWith10RandomNumbers, getRandomNumber())
-interpolationSearch(arrayWith100RandomNumbers, getRandomNumber())
-interpolationSearch(arrayWith1KRandomNumbers, getRandomNumber())
-interpolationSearch(arrayWith10KRandomNumbers, getRandomNumber())
+const timeLinearSearch1k = process.hrtime();
+linearSearch(arrayWith1KNumbers, getRandomNumber(0, 1000))
+const diffLinearSearch1k = process.hrtime(timeLinearSearch1k);
+console.log(`linearSearch(arrayWith1KNumbers, getRandomNumber(0,1000)): took ${diffLinearSearch1k[0] * NS_PER_SEC + diffLinearSearch1k[1]} nanoseconds\n`);
+
+const timeLinearSearch10k = process.hrtime();
+linearSearch(arrayWith10KNumbers, getRandomNumber(0, 1000))
+const diffLinearSearch10k = process.hrtime(timeLinearSearch10k);
+console.log(`linearSearch(arrayWith10KNumbers, getRandomNumber(0,1000)): took ${diffLinearSearch10k[0] * NS_PER_SEC + diffLinearSearch10k[1]} nanoseconds\n`);
+
+
+const timeBinarySearch10 = process.hrtime();
+binarySearch(arrayWith10Numbers, getRandomNumber(0, 1000))
+const diffBinarySearch10 = process.hrtime(timeBinarySearch10);
+console.log(`binarySearch(arrayWith10Numbers, getRandomNumber(0,1000)): took ${diffBinarySearch10[0] * NS_PER_SEC + diffBinarySearch10[1]} nanoseconds\n`);
+
+const timeBinarySearch100 = process.hrtime();
+binarySearch(arrayWith100Numbers, getRandomNumber(0, 1000))
+const diffBinarySearch100 = process.hrtime(timeBinarySearch100);
+console.log(`binarySearch(arrayWith100RandomNumber, getRandomNumber(0,1000)): took ${diffBinarySearch100[0] * NS_PER_SEC + diffBinarySearch100[1]} nanoseconds\n`);
+
+const timeBinarySearch1k = process.hrtime();
+binarySearch(arrayWith1KNumbers, getRandomNumber(0, 1000))
+const diffBinarySearch1k = process.hrtime(timeBinarySearch1k);
+console.log(`binarySearch(arrayWith1KNumbers, getRandomNumber(0,1000)): took ${diffBinarySearch1k[0] * NS_PER_SEC + diffBinarySearch1k[1]} nanoseconds\n`);
+
+const timeBinarySearch10k = process.hrtime();
+binarySearch(arrayWith10KNumbers, getRandomNumber(0, 1000))
+const diffBinarySearch10k = process.hrtime(timeBinarySearch10k);
+console.log(`binarySearch(arrayWith10KNumbers, getRandomNumber(0,1000)): took ${diffBinarySearch10k[0] * NS_PER_SEC + diffBinarySearch10k[1]} nanoseconds\n`);
+
+
+const timeInterpolationSearch10 = process.hrtime();
+interpolationSearch(arrayWith10Numbers, getRandomNumber(0, 1000))
+const diffInterpolationSearch10 = process.hrtime(timeInterpolationSearch10);
+console.log(`interpolationSearch(arrayWith10Numbers, getRandomNumber(0,1000)): took ${diffInterpolationSearch10[0] * NS_PER_SEC + diffInterpolationSearch10[1]} nanoseconds\n`);
+
+const timeInterpolationSearch100 = process.hrtime();
+interpolationSearch(arrayWith100Numbers, getRandomNumber(0, 1000))
+const diffInterpolationSearch100 = process.hrtime(timeInterpolationSearch100);
+console.log(`interpolationSearch(arrayWith100RandomNumber, getRandomNumber(0,1000)): took ${diffInterpolationSearch100[0] * NS_PER_SEC + diffInterpolationSearch100[1]} nanoseconds\n`);
+
+const timeInterpolationSearch1k = process.hrtime();
+interpolationSearch(arrayWith1KNumbers, getRandomNumber(0, 1000))
+const diffInterpolationSearch1k = process.hrtime(timeInterpolationSearch1k);
+console.log(`interpolationSearch(arrayWith1KNumbers, getRandomNumber(0,1000)): took ${diffInterpolationSearch1k[0] * NS_PER_SEC + diffInterpolationSearch1k[1]} nanoseconds\n`);
+
+const timeInterpolationSearch10k = process.hrtime();
+interpolationSearch(arrayWith10KNumbers, getRandomNumber(0, 1000))
+const diffInterpolationSearch10k = process.hrtime(timeInterpolationSearch10k);
+console.log(`interpolationSearch(arrayWith10KNumbers, getRandomNumber(0,1000)): took ${diffInterpolationSearch10k[0] * NS_PER_SEC + diffInterpolationSearch10k[1]} nanoseconds\n`);
